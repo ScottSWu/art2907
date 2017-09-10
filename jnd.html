@@ -1,0 +1,171 @@
+<html>
+    <head>
+        <title>Just Noticeable Difference</title>
+        <style type="text/css">
+/**/
+
+.half {
+    /*outline: 1px dotted black;*/
+    margin-left: 4%;
+    width: 44%;
+    height: 98%;
+    float: left;
+}
+
+#outercircle {
+    width: 100%;
+    padding-top: 25%;
+    padding-bottom: 25%;
+    border-radius: 50%;
+}
+
+#innercircle {
+    margin-left: 25%;
+    width: 50%;
+    padding-top: 50%;
+    border-radius: 50%;
+}
+
+.right {
+    font-size: 2em;
+    font-family: Helvetica, Arial;
+}
+
+.input {
+    margin-top: 2em;
+}
+
+#color_feedback {
+    display: inline-block;
+    margin-bottom: -0.2em;
+    width: 1em;
+    height: 1em;
+    border: 1px solid black;
+    background: red;
+}
+
+#inner_feedback {
+    display: inline-block;
+}
+
+#outer_feedback {
+    display: inline-block;
+}
+
+button {
+    font-size: 0.9em;
+    width: 1em;
+    padding: 0px;
+}
+
+input {
+    width: 80%;
+}
+/**/
+        </style>
+        <script type="text/javascript">
+//
+function addEventListeners(target, events, fn) {
+    var slider = document.getElementById(target);
+    events.forEach(function(e) {
+        slider.addEventListener(e, fn);
+    });
+    document.getElementById(target + "_p").addEventListener("click", function(e) {
+        slider.value += 0.1;
+    });
+    document.getElementById(target + "_n").addEventListener("click", function(e) {
+        slider.value -= 0.1;
+    });
+}
+
+window.addEventListener("load", function() {
+    var $ = function(id) { return document.getElementById(id); };
+    
+    var hval = 0;
+    var ilval = 50;
+    var olval = 50;
+    
+    var updateCircles = function() {
+        hval = $("color_value").value;
+        ilval = $("inner_value").value;
+        olval = $("outer_value").value;
+        $("color_feedback").style.background = "hsl(" + hval + ", 100%, 50%)";
+        $("inner_feedback").innerHTML = ilval;
+        $("outer_feedback").innerHTML = olval;
+        $("innercircle").style.background = "hsl(" + hval + ", 100%, " + ilval + "%)";
+        $("outercircle").style.background = "hsl(" + hval + ", 100%, " + olval + "%)";
+    };
+    
+    $("color_value").addEventListener("change",    updateCircles);
+    $("color_value").addEventListener("mousedown", updateCircles);
+    $("color_value").addEventListener("mousemove", updateCircles);
+    
+    $("inner_value").addEventListener("change",    updateCircles);
+    $("inner_value").addEventListener("mousedown", updateCircles);
+    $("inner_value").addEventListener("mousemove", updateCircles);
+    
+    $("outer_value").addEventListener("change",    updateCircles);
+    $("outer_value").addEventListener("mousedown", updateCircles);
+    $("outer_value").addEventListener("mousemove", updateCircles);
+    
+    $("color_value_p").addEventListener("click", function() {
+        // value has type string otherwise
+        $("color_value").value = parseFloat($("color_value").value) + 0.1;
+        updateCircles();
+    });
+    $("color_value_n").addEventListener("click", function() {
+        $("color_value").value = parseFloat($("color_value").value) - 0.1;
+        updateCircles();
+    });
+    
+    $("inner_value_p").addEventListener("click", function() {
+        // value has type string otherwise
+        $("inner_value").value = parseFloat($("inner_value").value) + 0.1;
+        updateCircles();
+    });
+    $("inner_value_n").addEventListener("click", function() {
+        $("inner_value").value = parseFloat($("inner_value").value) - 0.1;
+        updateCircles();
+    });
+    
+    $("outer_value_p").addEventListener("click", function() {
+        // value has type string otherwise
+        $("outer_value").value = parseFloat($("outer_value").value) + 0.1;
+        updateCircles();
+    });
+    $("outer_value_n").addEventListener("click", function() {
+        $("outer_value").value = parseFloat($("outer_value").value) - 0.1;
+        updateCircles();
+    });
+    
+    updateCircles();
+});
+//
+        </script>
+    </head>
+    <body>
+        <div class="left half">
+            <div id="outercircle"><div id="innercircle"></div></div>
+        </div>
+        <div class="right half">
+            <div class="input">
+                Color: <div id="color_feedback"></div><br />
+                <button id="color_value_n">-</button>
+                <input type="range" min="0" max="360" value="0" id="color_value" />
+                <button id="color_value_p">+</button>
+            </div>
+            <div class="input">
+                Inner Brightness: <div id="inner_feedback">50</div><br />
+                <button id="inner_value_n">-</button>
+                <input type="range" min="0" max="100" step="0.1" value="50" id="inner_value" />
+                <button id="inner_value_p">+</button>
+            </div>
+            <div class="input">
+                Outer Brightness: <div id="outer_feedback">50</div><br />
+                <button id="outer_value_n">-</button>
+                <input type="range" min="0" max="100" step="0.1" value="50" id="outer_value" />
+                <button id="outer_value_p">+</button>
+            </div>
+        </div>
+    </body>
+</html>
